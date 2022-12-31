@@ -1,0 +1,84 @@
+body {
+       text-align: center;
+       font-size: small;
+       font-family: 'Courier New', Courier, monospace;
+}
+
+
+* {
+       box-sizing: border-box;
+}
+
+
+.container {
+       width: 39%;    
+       border: 2px solid rgba(0, 0, 0, 0.076); 
+       margin: 10px;
+       position: relative;
+       left: 30%;
+   }
+   
+   
+.column {
+       float: left;     
+       width: 33.3%;        
+       padding: 5px;     
+   }
+   
+
+.row::after {
+       content:"";    
+       display: table; 
+       clear: both;   
+   }
+   
+
+input {
+       width: 100%;
+       border: 1px solid;
+       border-color:rgba(0, 0, 0, 0.15);
+       font-family: 'Courier New', Courier, monospace;
+       outline: none;
+   }
+
+
+select {
+       width: 100%;
+       border: none;
+       background-color:rgba(0, 0, 0, 0.15); 
+       font-family: 'Courier New', Courier, monospace;
+       text-align: center;
+    }
+   
+
+button {
+       width: 100%;
+       overflow: hidden;
+       border: none;
+       background-color:rgba(0, 0, 0, 0.15); 
+       font-family: 'Courier New', Courier, monospace;
+   }
+   
+   
+.result {
+       text-align: center;
+       font-size: smaller;
+   }
+   
+
+h1, h3 {
+       margin: 10px;
+   }
+
+
+   p {
+       margin: 10px;   
+   }
+   
+
+.box {
+       margin:10px;
+       padding:10px;
+       position: relative;
+       left: 25%;
+   }

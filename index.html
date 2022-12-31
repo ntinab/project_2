@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<br lang="en">
+<head>
+       <meta charset="UTF-8">
+       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Project 2</title>
+
+       <link rel="stylesheet" type="text/css" href="style.css">
+       <script src="scripts.js"></script> 
+</head>
+<br>
+
+       <div onload="onLoad()">
+
+       <h1>Υπολογισμός Μέσης Ταχύτητας</h1> </br> </br>
+       <img src="/1.png" alt="μέση ταχύτητα"> </br> </br>
+
+       <p><i>Η μέση ταχύτητα ορίζεται ως η μετατόπιση δια το αντίστοιχο χρονικό διάστημα.</i></p> </br>
+       <img src="/3.png" alt="διάγραμμα μέσης ταχύτητας" width="200" height="150"> </br> </br> </br> </br> </br> 
+
+
+       <h3>Υπολογιστής Μέσης Ταχύτητας</h3> </br> 
+       <p>Μπορείτε να υπολογίσετε οποιαδήποτε παράμετρο <b>U, </b> <b>Δx, </b> ή <b> Δt </b> αν γνωρίζετε δύο εκ των τριών παραμέτρων.</p> </br> </br>
+       <img src="/2.png" alt="τύπος μέσης ταχύτητας" width="100" height="25"> </br> </br>
+       <p><i>Χρησιμοποιήστε το αναδυόμενο μενού επιλογών <b>"Υπολογισμός:" </b> για να επιλέξετε την άγνωστη μεταβλητή.</i></p> 
+       <p><i>Το πεδίο με <b style="color:rgba(0, 0, 0, 0.261)">γκρι</b> χρώμα είναι το πεδίο της άγνωστης μεταβλητής.</i></p> </br>
+
+       <div id ="bord" class="container">
+
+           <div class = "row">
+               <div class="column"><p>Τιμή της μέσης ταχύτητας <b>(U) </b></p></div>
+               <div class="column"><p>Τιμή της μετατόπισης <b>(Δx) </b></p></div>
+               <div class="column"><p>Τιμή του χρόνου <b>(Δt) </b></p></div>
+           </div>
+
+           <div class = "row">
+               <div class="column"><input id="velocity"></div>
+               <div class="column"><input id="displacement"></div>
+               <div class="column"><input id="time"></div>
+           </div>
+           
+           <div class = "row">
+               <div class="column"><label for="calcSelection">Υπολογισμός: </label></div>
+               <div class="column"></div>
+               <div class="column"></div>
+           </div>
+
+           <div class = "row">
+               <div class="column"> 
+                   <select name="Calculate" id="calcSelection" onchange="onResultChange()">
+                   <option value="U"">Μέσης Ταχύτητας</option>
+                   <option value="D">Μετατόπισης</option>
+                   <option value="T">Χρόνου</option>
+                   </select></div>
+               <div class="column"> <p id="result" class="result"></p></div>
+               <div class="column"><button id="calcButton" onclick="oncalcButtonClick()">Υπολογισμός</button></div>    
+       </div>
+
+   </div>  
+
+   <script>
+       
+       // δήλωση μεταβλητών αναφοράς για κάθε πεδίο εισόδου
+       let inputU = document.getElementById("velocity");
+       let inputD = document.getElementById("displacement");
+       let inputT = document.getElementById("time");
+
+
+       // δήλωση μεταβλητής αναφοράς για το στοιχείο αναδυόμενης λίστας επιλογής υπολογισμού
+       let calc = document.getElementById("calcSelection");
+
+
+       // δήλωση μεταβλητής αναφοράς για το στοιχείο εμφάνισης αποτελέσματος 
+       let result = document.getElementById("result");
+
+
+        // συνάρτηση που εκτελείται κατά τη φόρτωση της σελίδας 
+       function onLoad() {
+        // κατά τη φόρτωση της σελίδας 
+        calc.value = "U";               // επιλέγεται ως αρχική επιλογή υπολογισμού η μέση ταχύτητα
+        inputU.disabled = true;         // απενεργοποιείται το στοιχείο εισόδου της μέσης ταχύτητας
+        inputU.value = "";              // διαγράφεται το περιεχόμενο όλων των πεδίων εισόδου
+        inputD.value = "";
+        inputT.value = "";
+
+
+        // μορφοποίηση χρωμάτων 
+        inputU.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
+        inputD.style.backgroundColor = "transparent";
+        inputT.style.backgroundColor = "transparent";
+       }
+       
+
+        // συνάρτηση που θα εκτελείται με την αλλαγή της τιμής του στοιχείου select
+        function onResultChange() {            
+                calculationSelector(calc.value);           
+        }
+
+
+        // συνάρτηση που θα εκτελείται όταν πατηθεί το πλήκτρο υπολογισμού
+        function oncalcButtonClick() {
+            // ανάλογα με την επιλογή υπολογισμού
+            switch(calc.value)
+            {
+                case "U": // υπολογισμός της μέσης ταχύτητας από τη μετατόπιση και τον χρόνο 
+
+                // ελέγχεται αν η τιμή του χρόνου είναι ίση με 0
+                if (checkDenominator(inputT.value))
+                {
+                    // εμφάνιζεται το αποτέλεσμα στο πεδίο result 
+                    result.innerHTML = Velocity(inputD.value,inputT.value,true);
+                    // εμφανίζεται το ίδιο αποτέλεσμα και στο πεδίο εισόδου της μέσης ταχύτητας χωρίς τις μονάδες μέτρησης
+                    inputU.value = Velocity(inputD.value,inputT.value,false);;
+                }
+                else // αν η τιμή του χρόνου είναι 0 ή κάποια απροσδιόριστη τιμή 
+                {
+                    // θα εμφανιστεί το παρακάτω μήνυμα
+                    result.innerHTML = "Η τιμή του χρόνου (Δt) δεν έχει σωστή μορφή.";
+                }
+                    break;
+
+                case "D": // υπολογισμός της μετατόπισης από τη μέση ταχύτητα και τον χρόνο
+
+                        // εμφανίζεται το αποτέλεσμα στο πεδίο result 
+                        result.innerHTML = Displacement(inputU.value,inputT.value,true);
+                        // εμφανίζεται το ίδιο αποτέλεσμα και στο πεδίο εισόδου της μετατόπισης χωρίς τις μονάδες μέτρησης
+                        inputD.value = Displacement(inputU.value,inputT.value,false);            
+                    break;
+
+                case "T": // υπολογισμός του χρόνου από τη μέση ταχύτητα και τη μετατόπιση 
+
+                // ελέγχεται αν η τιμή της μέσης ταχύτητας είναι ίση με 0
+                if (checkDenominator(inputU.value))
+                {
+                    // εμφανίζεται το αποτέλεσμα στο πεδίο result 
+                    result.innerHTML = Time(inputD.value,inputU.value,true);
+                    // εμφανίζεται το ίδιο αποτέλεσμα και στο πεδίο εισόδου του χρόνου χωρίς τις μονάδες μέτρησης
+                    inputT.value = Time(inputD.value,inputU.value,false);;
+                }
+                else // αν η τιμή της μέσης ταχύτητας είναι 0 ή κάποια απροσδιόριστη τιμή 
+                {
+                    // θα εμφανιστεί το παρακάτω μήνυμα
+                    result.innerHTML = "Η τιμή της μέσης ταχύτητας (U) δεν έχει σωστή μορφή.";
+                }
+                break;
+            }
+        }
+
+
+        // μία συνάρτηση η οποία επιστρέφει true αν η παράμετρος value είναι αριθμός διαφορετικός του 0
+        // θα χρησιμοποιηθεί με στόχο να ελέγχει αν ο παρανομαστής ενός κλάσματος δέν είναι 0 με στόχο να μην
+        // δημιουργηθούν προβλήματα κατά τις πράξεις με διαιρέσεις.
+        function checkDenominator(value) {
+            // μεταβλητή η οποία θα γίνει true μόνο αν ο παρανομαστής είναι αριθμός και είναι διαφορετικός του 0
+            let pass = false;
+
+            // μετατροπή της τιμής value σε αριθμό τύπου float
+            let f = parseFloat(value);
+            // πραγματοποιείται έλεγχος της εγκυρότητας της τιμής
+            if (!Number.isNaN(f))
+            {
+                // πραγματοποιείται έλεγχος για την αποφυγή τιμής ίσης με 0
+                if (value != 0)
+                 pass = true;                
+            }
+            return pass;
+        }
+
+
+        // συνάρτηση με τη μορφή διαδικασίας η οποία δέχεται μία παράμετρο value
+        // και σύμφωνα με την τιμή αυτής της παραμέτρου απενεργοποιείται το κουτί εισόδου
+        // που αντιστοιχεί στον υπολογισμό αυτής της ποσότητας. Οι επιτρεπτές τιμές είναι
+        // "U" - για υπολογισμό της μέσης ταχύτητας
+        // "D" - για υπολογισμό της μετατόπισης
+        // "T" - για υπολογισμό του χρόνου.
+        // Η συνάρτηση αυτή έχει σχεδιαστεί να λειτουργεί με την συνάρτηση εξυπηρέτησης του event onChange
+        // για το στοιχείο <select> κατά την επιλογή της παραμέτρου υπολογισμού
+
+
+        function calculationSelector(value) {
+            // ανάλογα με την τιμή της παραμέτρου value
+            // απενεργοποιείται το κουτί εισόδου το οποίο θα υπολογιστεί 
+            // και ενεργοποιούνται τα κουτιά εισόδου των τιμών οι οποίες θα συμμετέχουν στους υπολογισμούς ως δεδομένα
+            // μορφοποιούνται επίσης τα χρώματα των πεδίων που είναι ενεργά καθώς και του πεδίου που είναι ανενεργό
+
+            switch (value) 
+            {
+                case "U":
+                    inputU.disabled = true;
+                    inputD.disabled = false;
+                    inputT.disabled = false;
+                    inputU.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
+                    inputD.style.backgroundColor = "transparent";
+                    inputT.style.backgroundColor = "transparent";
+                    break;
+                case "D":
+                    inputU.disabled = false;
+                    inputD.disabled = true;
+                    inputT.disabled = false;
+                    inputU.style.backgroundColor = "transparent";
+                    inputD.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
+                    inputT.style.backgroundColor = "transparent";
+                    break;
+                case "T":
+                    inputU.disabled = false;
+                    inputD.disabled = false;
+                    inputT.disabled = true;
+                    inputU.style.backgroundColor = "transparent";
+                    inputD.style.backgroundColor = "transparent";
+                    inputT.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
+                    break;
+                default:               
+                    inputU.disabled = true;
+                    inputD.disabled = false;
+                    inputT.disabled = false;
+                    inputU.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
+                    inputD.style.backgroundColor = "transparent";
+                    inputT.style.backgroundColor = "transparent";
+                    break;
+            }
+        }
+    </script>
+
+</body>
+</html>
